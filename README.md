@@ -20,31 +20,101 @@ Get the number and replace "[PUT ID OF THE CHAT THAT YOU START WITH BOT]" in the
 ### Directory structure
 
 ```
-+--- LICENSE
-+--- README.md
-+--- init.d/
-	+--- lanports
-	+--- telegram_bot
-+--- lanports
-+--- plugins/
-	+--- block
-	+--- fwlist
-	+--- gethosts
-	+--- getip
-	+--- help/
-		+--- block
-		+--- fwlist
-		+--- gethosts
-		+--- getip
-		+--- getwifi
-		+--- start
-		+--- unblock
-		+--- wifilist
-	+--- start
-	+--- unblock
-	+--- wifilist
-+--- telebot
-+--- telegram\_bot
+.
+├── etc
+│   ├── config
+│   │   └── tbot
+│   └── init.d
+│       └── telegram_bot
+├── LICENSE
+├── README.md
+├── sbin
+│   ├── telebot
+│   ├── telegram_bot
+│   ├── telegram_sender
+│   ├── telekeyboard
+│   └── typing
+├── to_review
+│   ├── bin
+│   │   ├── hosts_scan
+│   │   └── lanports
+│   └── service
+│       ├── hosts_scan
+│       └── lanports
+└── usr
+    └── lib
+        └── tbot
+            ├── actions
+            │   ├── fw_delete
+            │   ├── fw_disable
+            │   ├── fw_enable
+            │   ├── fwr_disable
+            │   ├── fwr_enable
+            │   ├── proc_restart
+            │   ├── proc_start
+            │   ├── proc_stop
+            │   ├── wifi_disable
+            │   ├── wifi_enable
+            │   └── wifi_restart
+            ├── fw_add
+            ├── fw_delete
+            ├── fw_disable
+            ├── fw_enable
+            ├── fw_list
+            ├── fwr_disable
+            ├── fwr_enable
+            ├── fwr_list
+            ├── fw_unblock
+            ├── get_ip
+            ├── get_mac
+            ├── get_ping
+            ├── get_uptime
+            ├── help
+            │   ├── fw_add
+            │   ├── fw_delete
+            │   ├── fw_disable
+            │   ├── fw_enable
+            │   ├── fw_list
+            │   ├── fwr_disable
+            │   ├── fwr_enable
+            │   ├── fwr_list
+            │   ├── fw_unblock
+            │   ├── get_ip
+            │   ├── get_mac
+            │   ├── get_ping
+            │   ├── get_uptime
+            │   ├── hst_list
+            │   ├── netstat
+            │   ├── proc_list
+            │   ├── proc_restart
+            │   ├── proc_start
+            │   ├── proc_stop
+            │   ├── proxy_disable
+            │   ├── proxy_enable
+            │   ├── proxy_list
+            │   ├── reboot
+            │   ├── start
+            │   ├── swports_list
+            │   ├── wifi_disable
+            │   ├── wifi_enable
+            │   ├── wifi_list
+            │   ├── wifi_restart
+            │   └── wll_list
+            ├── hst_list
+            ├── netstat
+            ├── proc_list
+            ├── proc_restart
+            ├── proc_start
+            ├── proc_stop
+            ├── reboot
+            ├── start
+            ├── swports_list
+            ├── wifi_disable
+            ├── wifi_enable
+            ├── wifi_list
+            ├── wifi_restart
+            └── wll_list
+
 ```
 #### lanports file
 
