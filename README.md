@@ -17,12 +17,13 @@ After you send the message, in the OpenWRT run this:
 
 Get the number and replace "[PUT ID OF THE CHAT THAT YOU START WITH BOT]" in /etc/config/tbot.
 
-
+```
 config tbot 'global'
         option api 'https://api.telegram.org/bot'
         option key '[PUT YOUR BOT KEY HERE]'
         option chat_id '[PUT ID OF THE CHAT THAT YOU START WITH BOT]'
-
+        
+```
 
 ### Directory structure
 
