@@ -22,7 +22,7 @@ config tbot 'global'
         option api 'https://api.telegram.org/bot'
         option key '[PUT YOUR BOT KEY HERE]'
         option chat_id '[PUT ID OF THE CHAT THAT YOU START WITH BOT]'
-        
+
 ```
 
 ### Directory structure
@@ -126,6 +126,8 @@ config tbot 'global'
 ```
 #### tbot service
 
+```
+
 Syntax: /etc/init.d/tbot [command]
 
 Available commands:
@@ -135,6 +137,8 @@ Available commands:
         reload  Reload configuration files (or restart if service does not implement reload)
         enable  Enable service autostart
         disable Disable service autostart
+
+```
 
 #### plugins
 
