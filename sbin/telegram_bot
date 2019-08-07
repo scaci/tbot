@@ -4,11 +4,11 @@ PATH='/usr/bin:/usr/sbin:/bin:/sbin'
 
 echo "starting" 
 
-source /root/variables
+source /etc/config/tbot
 
-touch  /root/bot_vars
-path="/root"
-plugins="${path}/plugins"
+touch  /var/run/bot_vars
+path="/sbin"
+plugins="/usr/lib/tbot"
 actions="${plugins}/actions"
 command_not_found="Sorry,
 I only recognize *commands*.
@@ -19,7 +19,7 @@ starting=1
 
 while [ true ]
 do 
-	source /root/bot_vars
+	source /var/run/bot_vars
 	offset=$(($offset+1))
 	status=0
 	updates=$(curl -s -k -X GET $api/getUpdates?offset=$offset)
@@ -46,7 +46,7 @@ do
 				curl -k -s -X POST $api/leaveChat -d chat_id=$origin  
 			else
 
-				/root/typing > /tmp/typing.log &
+				/sbin/typing > /tmp/typing.log &
 				#curl -k -X POST $api/sendChatAction -d "chat_id=$my_chat_id" -d "action=typing" 
 				if [ $(echo "$is_a_cmd" | grep "bot_command" -q; echo -n $?) == 0 ]; then 
 					cmd=$(echo $command |  awk '{print $1}')
@@ -59,7 +59,7 @@ do
 						cd ${plugins}
 						(echo "Call $cmd [$parms]" | logger -t "telegram_bot" -p daemon.info)&
 						result=$("./$cmd" $parms)
-						/root/telegram_sender "$result"
+						/sbin/telegram_sender "$result"
 						cd  ${path}
 					else
 						curl -k -s -X POST $api/sendMessage -d chat_id=$origin -d parse_mode=Markdown --data-urlencode text="Command *${cmd}* not found!" 
@@ -92,7 +92,7 @@ do
 		done
 	
 		if [ -n "$update_ids" ]; then
-			echo "offset=$update_id" > /root/bot_vars
+			echo "offset=$update_id" > /var/run/bot_vars
 	  	fi
 	fi
 	starting=0

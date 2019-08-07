@@ -2,7 +2,7 @@
 
 export PATH='/usr/bin:/usr/sbin:/bin:/sbin'
 
-source /root/variables
+source /etc/config/tbot
 
 command="$1"
 

@@ -1,7 +1,7 @@
 #!/bin/ash
 
 PATH='/usr/bin:/usr/sbin:/bin:/sbin'
-source /root/variables
+source /etc/config/tbot
 
 items=$1
 
