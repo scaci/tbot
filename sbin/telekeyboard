@@ -2,9 +2,10 @@
 
 export PATH="/usr/bin:/usr/sbin:/bin:/sbin"
 
-source /etc/config/tbot
-
 command="$1"
+api=$2
+key=$3
+chat_id=$4
 
 command_new=${command//_/\\_}
 
@@ -15,4 +16,4 @@ keyboard='{"inline_keyboard": ['$rules'] }'
 
 echo $keyboard
 
-#curl -k -s -X POST -H "Charset: UTF-8"  $api/sendMessage -d chat_id=$my_chat_id -d "reply_markup=${keyboard}" -d "text=Choose one:"
+#curl -k -s -X POST -H "Charset: UTF-8"  $api$key/sendMessage -d chat_id=$chat_id -d "reply_markup=${keyboard}" -d "text=Choose one:"

@@ -2,10 +2,11 @@
 
 export PATH='/usr/bin:/usr/sbin:/bin:/sbin'
 
-source /etc/config/tbot
-
 command="$1"
+api=$2
+key=$3
+chat_id=$4
 
 command_new=${command//_/\\_}
 
-curl -k -s -X POST $api/sendMessage -d chat_id=$my_chat_id -d parse_mode=Markdown --data-urlencode text="$command_new" &>/tmp/telegram.log
+curl -k -s -X POST $api$key/sendMessage -d chat_id=$chat_id -d parse_mode=Markdown --data-urlencode text="$command_new" &>/tmp/telegram.log
