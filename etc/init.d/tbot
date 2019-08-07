@@ -1,0 +1,43 @@
+#!/bin/sh /etc/rc.common
+# Copyright (C) 2006-2019 OpenWrt.org
+#TO FIX
+
+START=95
+STOP=15
+
+USE_PROCD=1
+PROG=/sbin/telegram_bot
+CONFIGURATION=tbot
+
+start_service () {
+        config_load "${CONFIGURATION}"
+        local api
+        local key
+        local chat_id
+
+        config_get api global api
+        config_get key global key
+        config_get chat_id global chat_id
+
+        procd_open_instance
+        procd_set_param command /bin/sh "$PROG" "$api" "$key" "$chat_id"
+        procd_set_param file /etc/config/tbot
+#       procd_set_param respawn
+        procd_set_param stdout 1
+        procd_set_param stderr 1
+        procd_close_instance
+}
+
+stop_service() {
+        PID=$(pgrep -f /sbin/telegram_bot)
+        kill -0 $(pgrep -f /sbin/telegram_bot)
+        if [ "$(echo $_)" -ne 0 ] ; then
+                kill -9 $_
+        fi
+}
+
+#restart(){
+#        stop_service
+#        sleep 1
+#        start_service
+#}
