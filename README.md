@@ -8,14 +8,21 @@ First of all,
 Make a bot for you !
 https://core.telegram.org/bots/api#authorizing-your-bot
 
-With the bot created, you need to replace "[PUT YOUR BOT KEY HERE]" in variables  file with your bot key.
+With the bot created, you need to replace "[PUT YOUR BOT KEY HERE]" in /etc/config/tbot file with your bot key.
 
 Second, you need to send a initial message to your bot in Telegram App.
 After you send the message, in the OpenWRT run this:
 
 ``` curl -s -k -X GET https://api.telegram.org/bot<YOUR BOT ID>/getUpdates | grep -oE "\"id\":[[:digit:]]+" | head -n1 | awk -F : '{print $2}'```
 
-Get the number and replace "[PUT ID OF THE CHAT THAT YOU START WITH BOT]" in the variables file.
+Get the number and replace "[PUT ID OF THE CHAT THAT YOU START WITH BOT]" in /etc/config/tbot.
+
+
+config tbot 'global'
+        option api 'https://api.telegram.org/bot'
+        option key '[PUT YOUR BOT KEY HERE]'
+        option chat_id '[PUT ID OF THE CHAT THAT YOU START WITH BOT]'
+
 
 ### Directory structure
 
@@ -116,24 +123,21 @@ Get the number and replace "[PUT ID OF THE CHAT THAT YOU START WITH BOT]" in the
             └── wll_list
 
 ```
-#### lanports file
+#### tbot service
 
-This file reads the router logs with the logread -f command, and sends messages via bot telegram if a router port is turned off / on or the router delivers an IP address via DHCP.
+Syntax: /etc/init.d/tbot [command]
 
-#### init.d directory
+Available commands:
+        start   Start the service
+        stop    Stop the service
+        restart Restart the service
+        reload  Reload configuration files (or restart if service does not implement reload)
+        enable  Enable service autostart
+        disable Disable service autostart
 
-Contains the necessary files for the scripts to be started at the router boot, just move them to the /etc/init.d/ of the router and run:
-/etc/init.d/lanports enable
-/etc/init.d/telegram_bot enable
+#### plugins
 
-And then:
-
-/etc/init.d/lanports start
-/etc/init.d/telegram_bot start
-
-#### plugins directory
-
-This is the main directory, it contains all the commands that the telegram bot can execute.
+All the commands that the telegram bot can execute.
 
 There are some pre-built commands, which are:
 
@@ -145,9 +149,9 @@ There are some pre-built commands, which are:
  * Unblock: Removes a firewall rule created by Telegram, without an argument, all rules created by Telegram are deleted.
  * Wifilist: List all devices connected to WiFi.
 
-#### help directory inside plugins
+#### help for plugins
 
-This is the directory containing the help files, with the same name as the command, to be displayed by the start command.
+Help for available commands
 
 #### telebot file
 
