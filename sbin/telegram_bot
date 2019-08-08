@@ -20,7 +20,6 @@ I only recognize *commands*.
 Commands are words beginning with a slash.
 Try it !
 Send [/start](/start) to get my commands list."
-starting=1
 start_time=$(date +"%s")
 
 while [ true ]
@@ -59,9 +58,6 @@ do
 					prms=$(echo $command | awk '{$1=""; print $0}')
 					parms=${prms//[\"\&\;\\\>\<\|]/}
 					if [ -f "${plugins}$cmd" ]; then
-						if [[ "$cmd" == "reboot" && $starting == 1 ]]; then
-							next;
-						fi
 						cd ${plugins}
 						(echo "Call $cmd [$parms]" | logger -t "telegram_bot" -p daemon.info)&
 						result=$("./$cmd" $parms)
@@ -101,7 +97,6 @@ do
 			echo "offset=$update_id" > /var/run/bot_vars
 	  	fi
 	fi
-	starting=0
 	sleep 1
 done&
 } | (logger -t "telegram_bot" -p daemon.info)&
