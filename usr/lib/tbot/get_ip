@@ -1,5 +1,0 @@
-#!/bin/sh
-
-ifwan=$(ip route | grep default | awk '{print $5}')
-ip=$(ifconfig "$ifwan" | grep inet | grep -v inet6 | awk '{print $2}' | awk -F : '{print "*IP:* " $2}')
-echo $ip
