@@ -7,6 +7,9 @@ echo "starting"
 api=$1
 key=$2
 chat_id=$3
+from=$(uci get tbot.smtp.from)
+to=$(uci get tbot.smtp.to)
+recipient=$(uci get tbot.smtp.to)
 
 touch  /var/run/bot_vars
 path="/sbin"
@@ -33,23 +36,23 @@ do
 		do
 			origin=$(jsonfilter -s "$updates"  -e "$.result[@.update_id=$update_id].message.chat.id")
 			msg_id=$(jsonfilter -s "$updates"  -e "$.result[@.update_id=$update_id].message.message_id")
-			username=$(jsonfilter -s "$updates"  -e "$.result[@.update_id=$update_id].message.chat.username")
-			name=$(jsonfilter -s "$updates"  -e "$.result[@.update_id=$update_id].message.chat.first_name")
-			lastname=$(jsonfilter -s "$updates"  -e "$.result[@.update_id=$update_id].message.chat.last_name")
+			name=$(jsonfilter -s "$updates"  -e "$.result[@.update_id=$update_id].message.from.first_name")
+			lastname=$(jsonfilter -s "$updates"  -e "$.result[@.update_id=$update_id].message.from.last_name")
+			username=$(jsonfilter -s "$updates"  -e "$.result[@.update_id=$update_id].message.from.username")
 			command=$(jsonfilter -s "$updates" -e "$.result[@.update_id=$update_id].message.text")
 			is_a_cmd=$(jsonfilter -s "$updates" -e "$.result[@.update_id=$update_id].message.entities[*].type")
 			query_ans=$(jsonfilter -s "$updates" -e "$.result[@.update_id=$update_id].callback_query.id")
 			origin_ans=$(jsonfilter -s "$updates"  -e "$.result[@.update_id=$update_id].callback_query.message.chat.id")
 
 			if [[ "$origin" != "$chat_id" && "$origin_ans" != "$chat_id" ]];then
-				echo "From: ${From}"$'\n'"To: ${To}"$'\n'"Subject: TelegramBOT"$'\n\n'"Someone with username ${username} (${name} ${lastname}) is trying to use your bot, sending the ${command}" | ssmtp "${Sender}"
+				echo "From: ${from}"$'\n'"To: ${to}"$'\n'"Subject: TelegramBOT"$'\n\n'"Someone called ${name} ${lastname} (username ${username}) is trying to use your bot. Full log: $'\n\n'"$(jshn -r $updates)" | ssmtp "${recipient}"
 				curl -k -s -X POST $api$key/sendMessage -d reply_to_message_id=$msg_id -d chat_id=$origin -d parse_mode=Markdown --data-urlencode \
-				text="This is a Private bot. If you want to implement one for you, check this out https://github.com/alexwbaule/telegramopenwrt"
+				text="This is a Private bot."
 				curl -k -s -X POST $api$key/leaveChat -d chat_id=$origin
 			else
 
 				/sbin/typing "$api" "$key" "$chat_id" > /tmp/typing.log &
-				#curl -k -X POST $api$key/sendChatAction -d "chat_id=$chat_id" -d "action=typing" 
+				#curl -k -X POST $api$key/sendChatAction -d "chat_id=$chat_id" -d "action=typing"
 				if [ $(echo "$is_a_cmd" | grep "bot_command" -q; echo -n $?) == 0 ]; then
 					cmd=$(echo $command |  awk '{print $1}')
 					prms=$(echo $command | awk '{$1=""; print $0}')
