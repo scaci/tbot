@@ -2,13 +2,13 @@
 
 PATH='/usr/bin:/usr/sbin:/bin:/sbin'
 
-api=$1
-key=$2
-chat_id=$3
+api=$(uci get tbot.global.api)
+key=$(uci get tbot.global.key)
+chat_id=$(uci get tbot.global.chat_id)
 
 while [ true ]
 do
-	curl -k -X POST $api$key/sendChatAction -d "chat_id=$chat_id" -d "action=typing" &> /tmp/telegram.log   
+	curl -k -X POST $api$key/sendChatAction -d "chat_id=$chat_id" -d "action=typing" &> /tmp/telegram.log
 	echo "Typing"
 	sleep 6
 done

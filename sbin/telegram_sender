@@ -3,9 +3,9 @@
 PATH='/usr/bin:/usr/sbin:/bin:/sbin'
 
 items=$1
-api=$2
-key=$3
-chat_id=$4
+api=$(uci get tbot.global.api)
+key=$(uci get tbot.global.key)
+chat_id=$(uci get tbot.global.chat_id)
 
 IFS=$'\n'
 

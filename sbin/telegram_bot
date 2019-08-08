@@ -4,17 +4,17 @@ PATH='/usr/bin:/usr/sbin:/bin:/sbin'
 
 echo "starting"
 
-api=$1
-key=$2
-chat_id=$3
+api=$(uci get tbot.global.api)
+key=$(uci get tbot.global.key)
+chat_id=$(uci get tbot.global.chat_id)
 from=$(uci get tbot.smtp.from)
 to=$(uci get tbot.smtp.to)
 recipient=$(uci get tbot.smtp.to)
 
 touch  /var/run/bot_vars
 path="/sbin"
-plugins="/usr/lib/tbot"
-actions="${plugins}/actions"
+library="/usr/lib/tbot"
+actions="${library}/actions"
 command_not_found="Sorry,
 I only recognize *commands*.
 Commands are words beginning with a slash.
@@ -51,17 +51,17 @@ do
 				curl -k -s -X POST $api$key/leaveChat -d chat_id=$origin
 			else
 
-				/sbin/typing "$api" "$key" "$chat_id" > /tmp/typing.log &
+				/sbin/typing > /tmp/typing.log &
 				#curl -k -X POST $api$key/sendChatAction -d "chat_id=$chat_id" -d "action=typing"
 				if [ $(echo "$is_a_cmd" | grep "bot_command" -q; echo -n $?) == 0 ] && [ $start_time -lt $date ]; then
 					cmd=$(echo $command |  awk '{print $1}')
 					prms=$(echo $command | awk '{$1=""; print $0}')
 					parms=${prms//[\"\&\;\\\>\<\|]/}
-					if [ -f "${plugins}$cmd" ]; then
-						cd ${plugins}
+					if [ -f "${library}$cmd" ]; then
+						cd ${library}
 						(echo "Call $cmd [$parms]" | logger -t "telegram_bot" -p daemon.info)&
 						result=$("./$cmd" $parms)
-						/sbin/telegram_sender "$result" "$api" "$key" "$chat_id"
+						/sbin/telegram_sender "$result"
 						cd  ${path}
 					else
 						curl -k -s -X POST $api$key/sendMessage -d chat_id=$origin -d parse_mode=Markdown --data-urlencode text="Command *${cmd}* not found!"
