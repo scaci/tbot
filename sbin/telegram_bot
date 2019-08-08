@@ -21,6 +21,7 @@ Commands are words beginning with a slash.
 Try it !
 Send [/start](/start) to get my commands list."
 starting=1
+start_time=$(date +"%s")
 
 while [ true ]
 do
@@ -53,7 +54,7 @@ do
 
 				/sbin/typing "$api" "$key" "$chat_id" > /tmp/typing.log &
 				#curl -k -X POST $api$key/sendChatAction -d "chat_id=$chat_id" -d "action=typing"
-				if [ $(echo "$is_a_cmd" | grep "bot_command" -q; echo -n $?) == 0 ]; then
+				if [ $(echo "$is_a_cmd" | grep "bot_command" -q; echo -n $?) == 0 ] && [ $start_time -lt $date ]; then
 					cmd=$(echo $command |  awk '{print $1}')
 					prms=$(echo $command | awk '{$1=""; print $0}')
 					parms=${prms//[\"\&\;\\\>\<\|]/}
