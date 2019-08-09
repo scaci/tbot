@@ -50,9 +50,9 @@ Available commands:
 
 #### available commands
 
-*help
-*get_wan
-*reboot
+* help
+* get_wan
+* reboot
 
 #### telegram_bot
 
