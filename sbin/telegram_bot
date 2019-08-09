@@ -55,12 +55,11 @@ do
 				#curl -k -X POST $api$key/sendChatAction -d "chat_id=$chat_id" -d "action=typing"
 				if [ $(echo "$is_a_cmd" | grep "bot_command" -q; echo -n $?) == 0 ] && [ $start_time -lt $date ]; then
 					cmd=$(echo $command |  awk '{print $1}')
-					prms=$(echo $command | awk '{$1=""; print $0}')
-					parms=${prms//[\"\&\;\\\>\<\|]/}
+					parms=$(echo $command | awk '{$1=""; print $0}')
 					if [ -f "${library}$cmd" ]; then
-						cd ${library}
+						cmd=$(echo $library$cmd)
 						(echo "Call $cmd [$parms]" | logger -t "telegram_bot" -p daemon.info)&
-						result=$("./$cmd" $parms)
+						result=$("$cmd" $parms)
 						/sbin/telegram_sender "$result"
 						cd  ${path}
 					else

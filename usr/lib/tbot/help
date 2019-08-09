@@ -1,0 +1,43 @@
+#!/bin/sh
+
+command_list=$( ls -1 -p /usr/lib/tbot/ | grep -v -e "/" -e "function")
+
+descr(){
+        echo -e "help - Help for commands"
+}
+
+help(){
+        echo -e "Usage: help <command> \n\n Show help for <command>\n\n"
+        echo -e "Available commands:\n"
+        for command in $command_list
+        do
+          echo -e " $(/usr/lib/tbot/$command descr)"
+        done
+        echo -e "\n"
+        exit 0
+}
+
+if [ ! $# -eq 1 ]; then
+        help
+        exit 1
+fi
+
+case "$1" in
+        help)
+          help
+          ;;
+
+        descr)
+          descr $descr_message
+          ;;
+
+        *)
+          for command in $command_list
+          do
+            if [ "$1" == "$command" ]; then
+              echo -e "$(/usr/lib/tbot/$command help)\n"
+              exit 0
+            fi
+          done
+          help
+esac

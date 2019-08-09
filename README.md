@@ -48,24 +48,11 @@ Available commands:
 
 ```
 
-#### plugins
+#### available commands
 
-All the commands that the telegram bot can execute.
-
-There are some pre-built commands, which are:
-
- * Block: Creates a REJECT rule for a host (by macaddr) to make NAT for the internet.
- * Fwlist: Lists all firewall rules.
- * Gethosts: Lists the hosts that are in dhcp.leases, if the argument is a host, will list only the host found by regex.
- * Getip: WAN IP.
- * Start: Creates command help.
- * Unblock: Removes a firewall rule created by Telegram, without an argument, all rules created by Telegram are deleted.
- * Wifilist: List all devices connected to WiFi.
-
-#### help for plugins
-
-Help for available commands
-
+*help
+*get_wan
+*reboot
 
 #### telegram_bot
 

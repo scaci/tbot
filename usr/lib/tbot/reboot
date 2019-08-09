@@ -1,8 +1,11 @@
 #!/bin/sh
 
-help(){
-        echo -e "Usage: reboot [n] \n\n n time in seconds\n\n"
-}
+source /usr/lib/tbot/function
+
+descr_message="reboot - Reboot the router"
+
+help_message="Usage: reboot <n> \n\n n time in seconds\n\n"
+
 
 if [ ! $# -eq 1 ]; then
         help
@@ -11,33 +14,37 @@ fi
 
 case "$1" in
         help)
-                help
-                ;;
+          help $help_message
+          ;;
+
+        descr)
+          descr $descr_message
+          ;;
 
         *)
-                echo $1 | egrep '^[0-9]+$' >/dev/null 2>&1
+          echo $1 | egrep '^[0-9]+$' >/dev/null 2>&1
 
-                if [[ "$?" -eq 0 ]]; then
-                  api=$(uci get tbot.global.api)
-                  key=$(uci get tbot.global.key)
-                  chat_id=$(uci get tbot.global.chat_id)
+          if [[ "$?" -eq 0 ]]; then
+            api=$(uci get tbot.global.api)
+            key=$(uci get tbot.global.key)
+            chat_id=$(uci get tbot.global.chat_id)
 
-                  text="Scheduled reboot in $1 seconds"
-                  timer=$1
-                  echo "$text" | logger -t "telegram_bot" -p daemon.info
-                  out=$(curl -k -s -X POST -H "Charset: UTF-8"  $api$key/sendMessage -d chat_id=$chat_id -d "text=${text}")
-                  message_id=$(jsonfilter -s "$out" -e "$.result.message_id")
+            text="Scheduled reboot in $1 seconds"
+            timer=$1
+            echo "$text" | logger -t "telegram_bot" -p daemon.info
+            out=$(curl -k -s -X POST -H "Charset: UTF-8"  $api$key/sendMessage -d chat_id=$chat_id -d "text=${text}")
+            message_id=$(jsonfilter -s "$out" -e "$.result.message_id")
 
-                  while [ $timer -gt 0 ]; do
-                    text="Reboot in $timer seconds"
-                    editedout=$(curl -k -s -X POST -H "Charset: UTF-8"  $api$key/editMessageText -d chat_id=$chat_id -d message_id=$message_id -d "text=${text}")
-                    message_id=$(jsonfilter -s "$editedout" -e "$.result.message_id")
-                    timer=$(($timer-1))
-                    sleep 1
-                  done
+            while [ $timer -gt 0 ]; do
+              text="Reboot in $timer seconds"
+              editedout=$(curl -k -s -X POST -H "Charset: UTF-8"  $api$key/editMessageText -d chat_id=$chat_id -d message_id=$message_id -d "text=${text}")
+              message_id=$(jsonfilter -s "$editedout" -e "$.result.message_id")
+              timer=$(($timer-1))
+              sleep 1
+            done
 
-                  reboot
+            reboot
 
-                fi
+          fi
 
 esac

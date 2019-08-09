@@ -1,0 +1,3 @@
+*review telegram_bot
+*in /usr/lib/tbot/function define template method to use telegram API
+*check command in old directory
