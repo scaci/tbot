@@ -1,9 +1,0 @@
-#!/bin/sh
-
-descr(){
-        echo -e "$@"
-}
-
-help(){
-        echo -e "$@"
-}
