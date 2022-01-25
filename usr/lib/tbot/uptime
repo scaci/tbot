@@ -1,0 +1,32 @@
+#!/bin/sh
+
+source /usr/lib/tbot/function/addon
+
+descr_message="uptime - Get system uptime"
+
+help_message="Usage: uptime \n\n Get system uptime of router\n\n"
+
+if [ ! $# -ne 1 ]; then
+        help
+        exit 1
+fi
+
+  case "$1" in
+    help)
+      help $help_message
+      ;;
+
+    descr)
+      descr $descr_message
+      ;;
+
+    *)
+
+if [ $# -eq 0 ]; then
+
+        uptime=$(/usr/bin/uptime)
+        echo "Uptime is: $uptime"
+        exit 0
+fi
+
+esac

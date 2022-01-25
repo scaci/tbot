@@ -1,0 +1,33 @@
+#!/bin/sh
+
+source /usr/lib/tbot/function/addon
+
+descr_message="version - Get system version"
+
+help_message="Usage: version \n\n Get the system verion of router\n\n"
+
+if [ ! $# -ne 1 ]; then
+        help
+        exit 1
+fi
+
+  case "$1" in
+    help)
+      help $help_message
+      ;;
+
+    descr)
+      descr $descr_message
+      ;;
+
+    *)
+
+if [ $# -eq 0 ]; then
+
+        version=$(/bin/uname -a)
+        echo "System version is: $version"
+        exit 0
+
+fi
+
+esac
