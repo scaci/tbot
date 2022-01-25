@@ -6,11 +6,6 @@ descr_message="getWan - Get WAN IPv4 and IPv6 Address"
 
 help_message="Usage: getWan \n\n Get WAN IPv4 and IPv6 Address\n\n"
 
-if [ ! $# -ne 1 ]; then
-        help
-        exit 1
-fi
-
   case "$1" in
     help)
       help $help_message

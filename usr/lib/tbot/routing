@@ -1,0 +1,30 @@
+#!/bin/sh
+
+source /usr/lib/tbot/function/addon
+
+descr_message="routing - Get the routing table"
+
+help_message="Usage: routing \n\n Get routing table\n\n"
+
+  case "$1" in
+    help)
+      help $help_message
+      exit 0
+      ;;
+
+    descr)
+      descr $descr_message
+      exit 0
+      ;;
+
+    *)
+
+if [ $# -eq 0 ]; then
+
+        routingTable=$(/sbin/ip route)
+        echo -e "Routing table is: \n$routingTable"
+        exit 0
+
+fi
+
+esac

@@ -6,11 +6,6 @@ descr_message="uptime - Get system uptime"
 
 help_message="Usage: uptime \n\n Get system uptime of router\n\n"
 
-if [ ! $# -ne 1 ]; then
-        help
-        exit 1
-fi
-
   case "$1" in
     help)
       help $help_message
