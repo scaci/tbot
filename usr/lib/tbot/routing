@@ -21,8 +21,24 @@ help_message="Usage: routing \n\n Get routing table\n\n"
 
 if [ $# -eq 0 ]; then
 
-        routingTable=$(/sbin/ip route)
+        routingTable=$(/sbin/ip route show)
         echo -e "Routing table is: \n$routingTable"
+        exit 0
+
+else
+
+        echo $1 | egrep '^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]\/.*+$' >/dev/null 2>&1
+
+        if [[ ! "$?" -eq 0 ]]; then
+                text="routing command: $1 is a wrong argument"
+                echo "$text"
+                echo "$text" | logger -t "tbot" -p daemon.info
+                exit 1
+        fi
+
+        ipAdd=$1
+        routingTable=$(/sbin/ip route show $ipAdd)
+        echo -e "Route is at: \n$routingTable"
         exit 0
 
 fi

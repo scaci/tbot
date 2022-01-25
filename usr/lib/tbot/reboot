@@ -31,7 +31,7 @@ case "$1" in
 
             text="Scheduled reboot in $1 seconds"
             timer=$1
-            echo "$text" | logger -t "telegram_bot" -p daemon.info
+            echo "$text" | logger -t "tbot" -p daemon.info
             out=$(curl -k -s -X POST -H "Charset: UTF-8"  $api$key/sendMessage -d chat_id=$chat_id -d "text=${text}")
             message_id=$(jsonfilter -s "$out" -e "$.result.message_id")
 
